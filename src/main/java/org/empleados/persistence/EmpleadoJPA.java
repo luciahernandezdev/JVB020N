@@ -8,7 +8,7 @@ import java.util.List;
 
 public class EmpleadoJPA {
 
-    //Crear un  nuevo empleado
+    //Crear un nuevo empleado
     public void create(Empleado nuevoEmpleado) {
         EntityManager em = ConfigJPA.getEntityManager();
 
