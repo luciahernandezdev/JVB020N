@@ -8,6 +8,7 @@ import java.util.List;
 
 public class EmpleadoJPA {
 
+    //Crear un  nuevo empleado
     public void create(Empleado nuevoEmpleado) {
         EntityManager em = ConfigJPA.getEntityManager();
 
@@ -20,17 +21,17 @@ public class EmpleadoJPA {
         }
     }
 
+    //Buscar un empleado por ID
     public Empleado findOne(Integer idBuscado) {
         EntityManager em = ConfigJPA.getEntityManager();
-        try{
+        try {
             return em.find(Empleado.class, idBuscado);
-        }finally {
+        } finally {
             em.close();
         }
-
     }
 
-    // Método para buscar un empleado por su nombre
+    //Buscar un empleado por su nombre
     public Empleado findByName(String nombreBuscado) {
         EntityManager em = ConfigJPA.getEntityManager();
         try {
@@ -40,24 +41,25 @@ public class EmpleadoJPA {
             // Ejecutar la consulta y obtener el resultado
             List<Empleado> empleados = query.getResultList();
 
-            // Si encontramos resultados, devolvemos el primero, sino null
+            // Si encontramos resultados, devolvemos el primero, si no null
             return empleados.isEmpty() ? null : empleados.get(0);
-        } catch (Exception e) {
-            throw new RuntimeException("Error al buscar el empleado por nombre: " + e.getMessage(), e);
-        }
-
-    }
-    //Listar empleados
-    public List<Empleado> findAll() {
-        EntityManager em = ConfigJPA.getEntityManager();
-        try{
-            TypedQuery<Empleado> query = em.createQuery("SELECT p FROM empleado p", Empleado.class);
-            return query.getResultList();
-        }finally {
+        } finally {
             em.close();
         }
 
     }
+
+    //Listar empleados
+    public List<Empleado> findAll() {
+        EntityManager em = ConfigJPA.getEntityManager();
+        try {
+            TypedQuery<Empleado> query = em.createQuery("SELECT p FROM Empleado p", Empleado.class);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
     //Actualizar empleado
     public void update(Empleado actualizarEmpleado) {
         EntityManager em = ConfigJPA.getEntityManager();
@@ -69,6 +71,7 @@ public class EmpleadoJPA {
             em.close();
         }
     }
+
     //Eliminar empleado
     public void delete(Integer idEliminar) {
         EntityManager em = ConfigJPA.getEntityManager();
@@ -85,11 +88,16 @@ public class EmpleadoJPA {
             em.close();
         }
     }
-    //Buscar cargo
+
+    //Buscar empleado por cargo
     public List<Empleado> findByCargo(String cargo) {
         EntityManager em = ConfigJPA.getEntityManager();
-        TypedQuery<Empleado> query = em.createQuery("SELECT p FROM Empleado p WHERE e.cargo = :cargo", Empleado.class);
-        query.setParameter("cargo", cargo);
-        return query.getResultList();
+        try {
+            TypedQuery<Empleado> query = em.createQuery("SELECT p FROM Empleado p WHERE p.cargo = :cargo", Empleado.class);
+            query.setParameter("cargo", cargo);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
     }
 }

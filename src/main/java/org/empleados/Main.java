@@ -11,15 +11,19 @@ public class Main {
         // Agregar nuevo empleado
         Empleado nuevoEmpleado = new Empleado(
                 null,
-                "Manuel",
-                "Montero",
-                "Administrador de sistemas",
-                40.000,
-                LocalDate.of(2021, 6, 8)
+                "Álvaro",
+                "Diaz",
+                "Desarrollador",
+                20.000,
+                LocalDate.of(2022, 4, 6)
         );
-        //empleadoController.create(nuevoEmpleado);
+        System.out.println("Creando un nuevo empleado...");
+        empleadoController.create(nuevoEmpleado);
+        System.out.println("Empleado creado con éxito: " + nuevoEmpleado);
+
 
         //Listar empleados
+        System.out.println("\nListando todos los empleados:");
         List<Empleado> todosLosEmpleados = empleadoController.findAll();
         //Mostrar todos los empleados
         for (Empleado empleado : todosLosEmpleados) {
@@ -27,22 +31,36 @@ public class Main {
         }
 
         //Actualizar información de un empleado
-        Empleado actualizarEmpleado = empleadoController.findOne(6);
-        actualizarEmpleado.setNombre("Lucas");
-        empleadoController.update(actualizarEmpleado);
+        int idActualizar = 1; // Cambiar este ID según los datos existentes
+        Empleado empleadoParaActualizar = empleadoController.findOne(idActualizar);
+
+        if (empleadoParaActualizar != null) {
+            System.out.println("\nActualizando información del empleado con ID " + idActualizar);
+            empleadoParaActualizar.setNombre("Lucas");
+            empleadoParaActualizar.setCargo("Desarrollador");
+            empleadoController.update(empleadoParaActualizar);
+            System.out.println("Empleado actualizado: " + empleadoParaActualizar);
+        } else {
+            System.err.println("\nEmpleado con ID " + idActualizar + " no encontrado para actualización.");
+        }
 
         //Eliminar un empleado
+        int idEliminar = 2; // Cambiar este ID según los datos existentes
         Empleado empleadoBuscado = empleadoController.findOne(6);
         if (empleadoBuscado != null) {
             empleadoController.delete(empleadoBuscado.getId());
-            System.out.println("Empleado con ID 6 eliminado.");
+            System.out.println("Empleado con ID" + idEliminar + "eliminado.");
         } else {
-            System.err.println("Empleado con ID 6 no encontrado.");
+            System.err.println("Empleado con ID" + idEliminar + "no encontrado.");
         }
 
         //Buscar empleados por cargo
-        List<Empleado> empleadosPorCargo = empleadoController.findByCargo("Gerente de operaciones");
-        empleadosPorCargo.forEach(e -> System.out.println("Empleado con cargo 'Gerente de operaciones': " + e.getNombre() + " " + e.getApellido()));
+        String cargoBuscar = "Administrador de sistemas";
+        System.out.println("\nBuscando empleados con el cargo: " + cargoBuscar);
+        List<Empleado> empleadosPorCargo = empleadoController.findByCargo(cargoBuscar);
+        empleadosPorCargo.forEach(e ->
+                System.out.println("Empleado: " + e.getNombre() + " " + e.getApellido() + ", Cargo: " + e.getCargo())
+        );
     }
 
 }
