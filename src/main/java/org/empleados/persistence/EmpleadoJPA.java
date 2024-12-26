@@ -10,14 +10,14 @@ public class EmpleadoJPA {
 
     //Crear un nuevo empleado
     public void create(Empleado nuevoEmpleado) {
-        EntityManager em = ConfigJPA.getEntityManager();
+        EntityManager em = ConfigJPA.getEntityManager(); // Obtener una instancia de EntityManager
 
         try {
             em.getTransaction().begin(); // Iniciar una transacción
             em.persist(nuevoEmpleado); // Guardar el empleado
             em.getTransaction().commit(); // Confirmar la transacción
         } finally {
-            em.close();
+            em.close(); //Cierra el EntityManager
         }
     }
 
@@ -25,7 +25,7 @@ public class EmpleadoJPA {
     public Empleado findOne(Integer idBuscado) {
         EntityManager em = ConfigJPA.getEntityManager();
         try {
-            return em.find(Empleado.class, idBuscado);
+            return em.find(Empleado.class, idBuscado); //Busca el empleado por su ID
         } finally {
             em.close();
         }
@@ -54,7 +54,7 @@ public class EmpleadoJPA {
         EntityManager em = ConfigJPA.getEntityManager();
         try {
             TypedQuery<Empleado> query = em.createQuery("SELECT p FROM Empleado p", Empleado.class);
-            return query.getResultList();
+            return query.getResultList(); //Devuelve una lista de todos los empleados.
         } finally {
             em.close();
         }
@@ -64,11 +64,11 @@ public class EmpleadoJPA {
     public void update(Empleado actualizarEmpleado) {
         EntityManager em = ConfigJPA.getEntityManager();
         try{
-            em.getTransaction().begin(); // Iniciar una transaccion
-            em.merge(actualizarEmpleado);
-            em.getTransaction().commit();
+            em.getTransaction().begin(); //Iniciar una transaccion
+            em.merge(actualizarEmpleado);  //Actualiza el empleado existente
+            em.getTransaction().commit(); //Confirma la transacción
         }finally {
-            em.close();
+            em.close(); //Cierra el EntityManager
         }
     }
 
@@ -79,11 +79,11 @@ public class EmpleadoJPA {
             em.getTransaction().begin(); // Iniciar una transaccion
             Empleado empleado = em.find(Empleado.class, idEliminar);
             if (empleado != null){
-                em.remove(empleado);
+                em.remove(empleado); //Elimina el empleado si existe
             }else{
                 System.err.println("El id " + idEliminar + " No existe");
             }
-            em.getTransaction().commit();
+            em.getTransaction().commit(); //Confirma la transacción
         }finally {
             em.close();
         }
@@ -94,8 +94,8 @@ public class EmpleadoJPA {
         EntityManager em = ConfigJPA.getEntityManager();
         try {
             TypedQuery<Empleado> query = em.createQuery("SELECT p FROM Empleado p WHERE p.cargo = :cargo", Empleado.class);
-            query.setParameter("cargo", cargo);
-            return query.getResultList();
+            query.setParameter("cargo", cargo);  // Establece el valor del parámetro "cargo"
+            return query.getResultList(); //Devuelve una lista de empleados con el cargo especificado
         } finally {
             em.close();
         }
